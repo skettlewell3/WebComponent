@@ -1,0 +1,2 @@
+# WebComponent
+Simple web component
