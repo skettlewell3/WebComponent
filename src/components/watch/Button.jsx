@@ -1,10 +1,10 @@
 export default function Button({ onClick, label }) {
     return (
-        <div 
+        <button 
             className={`button ${label}`}
             onClick={onClick}
         >
             {label}
-        </div>
+        </button>
     )
 }
