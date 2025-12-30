@@ -1,3 +1,5 @@
+import Button from '../watch/Button'
+
 export default function ButtonPad({ 
     isRunning, 
     isPaused, 

@@ -7,6 +7,9 @@ export default function StopWatch({
         elapsedTime,
         pausedTime,
         workingTime,
+        currentInterval,
+        pauseCount,
+        systemTime,
         onStart,
         onPause,
         onResume,
@@ -20,6 +23,9 @@ export default function StopWatch({
                 workingTime={workingTime}
                 isRunning={isRunning}
                 isPaused={isPaused}
+                currentInterval={currentInterval}
+                pauseCount={pauseCount}
+                systemTime={systemTime}
             />
             <ButtonPad 
                 onStart={onStart}

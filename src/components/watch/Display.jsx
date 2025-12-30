@@ -3,44 +3,40 @@ import { formatTime } from "../../utils/time"
 export default function Display({
     elapsedTime,
     pausedTime,                
-    workingTime,
+    currentInterval,
     isRunning,               
     isPaused,
+    pauseCount,
+    systemTime
 }) {
 
-    let shrinkDisplayContent = null;
-    let focusDisplayContent = null;
+    let focusContent = null;
+    let shrinkLeft = null;
+    let shrinkRight = null;
 
-    if (!isRunning) {                                           //default state
-        shrinkDisplayContent = '';                  
-        focusDisplayContent = currentTime;  //systemClock
-    } else if (isRunning && !isPaused) {                        //Timer initialised
-        shrinkDisplayContent = '';
-        focusDisplayContent= elapsedTime;
-    } else if (isRunning && isPaused && pauseCount < 1) {
-        shrinkDisplayContent = elapsedTime;
-        focusDisplayContent= currentPausedTime;
-    } else if (isRunning && !isPaused && pauseCount > 0) {
-        shrinkDisplayContent = totalPausedTime + '(' + pauseCount + ')';
-        focusDispalyContent = elapsedTime
+    //Focus Display
+    if (!isRunning && elapsedTime === 0) {
+        focusContent = systemTime;
+    } else if (!isRunning) {
+        focusContent = formatTime(elapsedTime);
+    } else {
+        focusContent = formatTime(currentInterval || 0);
     }
+
+    if (pauseCount > 0) {
+        shrinkLeft = `❚❚(${pauseCount}) ${formatTime(pausedTime)}`;
+        shrinkRight = formatTime(elapsedTime);
+    }
+
     return (
         <div className="display">
-            {isPaused && (
-                <div className="pausedTime">
-                    {formatTime(pausedTime)}
-                </div>
-            )}
-
-            <div className={`elapsedTime ${isPaused ? 'shrink' : 'focus'}`}>
-                {formatTime(elapsedTime)}
+            <div className="shrink">
+                <span className="shrinkLeft">{shrinkLeft}</span>
+                <span className="shrinkRight">{shrinkRight}</span>
             </div>
-
-            {isPaused && (
-                <div className="pauseCount">
-                    Pauses: {pauseCount}
-                </div>
-            )}
+            <div className={`focus ${isPaused ? 'paused' : 'running'}`}>
+                {focusContent}
+            </div>
         </div>
-    )
+    );
 }

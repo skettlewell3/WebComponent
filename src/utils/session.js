@@ -27,3 +27,4 @@ export function endPause(session) {
 export function endSession(session) {
     return { ...session, endedAt: new Date() };
 }
+

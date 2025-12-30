@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import StopWatch from './watch/StopWatch';
 import RecordTable from './recordTable/RecordTable';
 import { createSession, startPause, endPause, endSession } from '../utils/session';
-import { calculateElapsedTime, calculatePausedTime } from '../utils/time';
+import { calculateElapsedTime, calculatePausedTime, formatSystemTime } from '../utils/time';
 
 export default function MainContainer() {
 
@@ -11,8 +11,10 @@ export default function MainContainer() {
 
     const [currentSession, setCurrentSession] = useState(null);
     const [sessions, setSessions] = useState([]);
+    const [lastTransitionAt, setLastTransitionAt] = useState(null)
 
     const [now, setNow] = useState(() => Date.now());
+    const [systemNow, setSystemNow] = useState(() => Date.now());
 
     // Data Model
     //
@@ -30,7 +32,7 @@ export default function MainContainer() {
 
     // Timer Mechanism
     useEffect(() => {
-        if (!isRunning || isPaused) return
+        if (!isRunning) return
 
         const interval = setInterval(() => {
             setNow(Date.now())
@@ -39,22 +41,34 @@ export default function MainContainer() {
         return () => clearInterval(interval)
     }, [isRunning, isPaused]);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setSystemNow(Date.now());
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     //Handlers 
 
     function start() {
-        setCurrentSession(createSession());
+        const session = createSession();
+        setCurrentSession(session);
         setIsRunning(true);
         setIsPaused(false);
+        setLastTransitionAt(session.startedAt.getTime());
     }
 
     function pause() {
         setIsPaused(true);
         setCurrentSession(prev => startPause(prev));
+        setLastTransitionAt(Date.now());
     }
 
     function resume() {
         setIsPaused(false);
         setCurrentSession(prev => endPause(prev));
+        setLastTransitionAt(Date.now());
     }
 
     function stop() {
@@ -63,12 +77,16 @@ export default function MainContainer() {
         setCurrentSession(null);
         setIsRunning(false);
         setIsPaused(false);
+        setLastTransitionAt(null)
     }
 
-    // Computed Values
+    // Referenced/Computed Values
     const elapsedTime = currentSession ? calculateElapsedTime(currentSession, now) : 0;
     const pausedTime = currentSession ? calculatePausedTime(currentSession) : 0;
     const workingTime = elapsedTime - pausedTime;
+    const currentInterval = lastTransitionAt ? Math.max(0, now - lastTransitionAt) : 0;
+    const pauseCount = currentSession ? currentSession.pauses.length : 0;
+    const systemTime = formatSystemTime(new Date(systemNow));
 
     return (
         <div className="mainContainer">
@@ -79,6 +97,9 @@ export default function MainContainer() {
                     elapsedTime={elapsedTime}
                     pausedTime={pausedTime}
                     workingTime={workingTime}
+                    currentInterval={currentInterval}
+                    pauseCount={pauseCount}
+                    systemTime={systemTime}
                     onStart={start}
                     onPause={pause}
                     onResume={resume}
@@ -86,7 +107,12 @@ export default function MainContainer() {
                 />
             </div>
             <div className="tableContainer">
-                <RecordTable  sessions={sessions} />
+                <RecordTable  
+                    sessions={sessions} 
+                    elapsedTime={elapsedTime}
+                    pausedTime={pausedTime}
+                    workingTime={workingTime}
+                />
             </div>
         </div>
     )
