@@ -17,11 +17,15 @@ export function formatTime(ms) {
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
 
-    const hh = hours.toString().padStart(2, '0');
     const mm = minutes.toString().padStart(2, '0');
     const ss = seconds.toString().padStart(2, '0');
+    
+    if (hours > 0) {
+        const hh = hours.toString().padStart(2, '0');
+        return `${hh}:${mm}:${ss}`;        
+    }
 
-    return `${hh}:${mm}:${ss}`;
+    return `${mm}:${ss}`;
 }
 
 export function formatSystemTime(date = new Date()) {

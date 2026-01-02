@@ -6,51 +6,132 @@
 }
 
 .mainContainer {
-  background-color: #999;
-  border: 5px solid purple;
-  border-radius: 5px;
-  height: 75vh;
-  width: 50vw;
-  padding: 1em;
+  container-type: size;
+  resize: both;
+  overflow: auto;
+  min-width: 280px;
+  min-height: 280px;
+  width: 500px;
+  height: 300px;
+  
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 2%;
   
+  background-color: #999;
+  border: 5px solid purple;  
+  border-radius: 5px;   
 }
 
-.watchContainer {
+/* .watchContainer {
   outline: 1px solid white;
   height: 62%;
   padding: 2em 1em;  
-}
+} */
 
 .stopWatch {
   height: 100%;
   width: 100%;
+  min-width: 240px;
+  min-height: 240px;
+  max-width: 100%;
+  max-height: 100%;
+
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
   gap: 1rem;
+  padding: 1rem;
+
+  box-sizing: border-box;
+  border: 2px solid white;
 }
 
 .display {
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  overflow: hidden;
+  min-width: 150px;
+  min-height: 150px;
+  
+  width: 90%;
+  height: auto;
+
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  
   background-color: white;
   outline: 1px solid red;
-  height: 60%;
+}
+
+.shrink {
+  height: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  font-size: clamp(1rem, 5cqw, 8rem);
+  background-color: #888;
+  outline: 1px solid purple;
+  color: purple;
+}
+
+.focus {
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(2rem, 12cqw, 12rem);
+  font-weight: 600;
 }
 
 .buttonPad {
-  outline: 1px solid purple;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  height: 12vh;
+  gap: 5%;
+  width: 90%;
+  flex: 0 0 auto;
+  padding: 2%;
+  outline: 1px solid purple;
 }
+
+.button {
+  padding: 0;
+  min-height: 2rem;
+  min-width: 2rem;
+  font-size: clamp(1rem, 4cqw, 6rem);
+}
+
+@container (min-aspect-ratio: 1.2 / 1) {
+  .stopWatch {
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  .display {
+    flex: 0 0 auto;
+    height: 95%;
+    width: auto;
+    max-width: 80%;
+  }
+  .buttonPad {
+    flex: 1 1 auto;
+    flex-direction: column;
+    height: 95%;
+  }
+}
+
+
+
 
 .tableContainer {
   outline: 1px solid red;
   height: 38%;
   padding: 1em;
+  display: none;
 }
 
 

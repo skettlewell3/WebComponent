@@ -90,22 +90,22 @@ export default function MainContainer() {
 
     return (
         <div className="mainContainer">
-            <div className="watchContainer">
-                <StopWatch 
-                    isRunning={isRunning}
-                    isPaused={isPaused}
-                    elapsedTime={elapsedTime}
-                    pausedTime={pausedTime}
-                    workingTime={workingTime}
-                    currentInterval={currentInterval}
-                    pauseCount={pauseCount}
-                    systemTime={systemTime}
-                    onStart={start}
-                    onPause={pause}
-                    onResume={resume}
-                    onStop={stop}
-                />
-            </div>
+            
+            <StopWatch 
+                isRunning={isRunning}
+                isPaused={isPaused}
+                elapsedTime={elapsedTime}
+                pausedTime={pausedTime}
+                workingTime={workingTime}
+                currentInterval={currentInterval}
+                pauseCount={pauseCount}
+                systemTime={systemTime}
+                onStart={start}
+                onPause={pause}
+                onResume={resume}
+                onStop={stop}
+            />
+            
             <div className="tableContainer">
                 <RecordTable  
                     sessions={sessions} 
