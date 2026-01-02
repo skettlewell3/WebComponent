@@ -11,8 +11,8 @@ export default function Display({
 }) {
 
     let focusContent = null;
-    let shrinkLeft = null;
-    let shrinkRight = null;
+    let shrinkTop = null;
+    let shrinkBottom = null;
 
     //Focus Display
     if (!isRunning && elapsedTime === 0) {
@@ -24,18 +24,25 @@ export default function Display({
     }
 
     if (pauseCount > 0) {
-        shrinkLeft = `❚❚(${pauseCount}) ${formatTime(pausedTime)}`;
-        shrinkRight = formatTime(elapsedTime);
+        shrinkBottom = (
+            <>
+            <div>❚❚({pauseCount})</div>
+            <div>{formatTime(pausedTime)}</div>
+            </>
+        );
+        shrinkTop = formatTime(elapsedTime);
     }
 
     return (
         <div className="display">
-            <div className="shrink">
-                <span className="shrinkLeft">{shrinkLeft}</span>
-                <span className="shrinkRight">{shrinkRight}</span>
+            <div className="shrink top">
+                {shrinkTop}
             </div>
             <div className={`focus ${isPaused ? 'paused' : 'running'}`}>
                 {focusContent}
+            </div>
+            <div className="shrink bottom">
+                {shrinkBottom}
             </div>
         </div>
     );
