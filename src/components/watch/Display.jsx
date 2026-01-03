@@ -6,6 +6,7 @@ export default function Display({
     currentInterval,
     isRunning,               
     isPaused,
+    isStopped,
     pauseCount,
     systemTime
 }) {

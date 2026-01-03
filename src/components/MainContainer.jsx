@@ -8,6 +8,7 @@ export default function MainContainer() {
 
     const [isRunning, setIsRunning] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
+    const [isStopped, setIsStopped] = useState(false);
 
     const [currentSession, setCurrentSession] = useState(null);
     const [sessions, setSessions] = useState([]);
@@ -73,11 +74,21 @@ export default function MainContainer() {
 
     function stop() {
         if (!currentSession) return;
-        setSessions(prev => [...prev, endSession(currentSession)]);
+        const ended = endSession(currentSession)
+        setSessions(prev => [...prev, ended]);
+        setCurrentSession(ended);
+        setIsRunning(false);
+        setIsPaused(false);
+        setIsStopped(true);
+        setLastTransitionAt(null);
+    }
+
+    function clear() {
         setCurrentSession(null);
         setIsRunning(false);
         setIsPaused(false);
-        setLastTransitionAt(null)
+        setIsStopped(false);
+        setLastTransitionAt(null);
     }
 
     // Referenced/Computed Values
@@ -94,6 +105,7 @@ export default function MainContainer() {
             <StopWatch 
                 isRunning={isRunning}
                 isPaused={isPaused}
+                isStopped={isStopped}
                 elapsedTime={elapsedTime}
                 pausedTime={pausedTime}
                 workingTime={workingTime}
@@ -104,6 +116,7 @@ export default function MainContainer() {
                 onPause={pause}
                 onResume={resume}
                 onStop={stop}
+                onClear={clear}
             />
             
             <div className="tableContainer">

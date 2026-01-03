@@ -3,16 +3,18 @@ import Button from '../watch/Button'
 export default function ButtonPad({ 
     isRunning, 
     isPaused, 
+    isStopped,
     onStart,
     onStop, 
     onPause,
-    onResume
+    onResume,
+    onClear
 }) {
 
     //label and handler logic for first button
     let firstButtonLabel;
     let firstButtonHandler;
-
+   
     if (!isRunning) {
         firstButtonLabel = '►';
         firstButtonHandler = onStart;
@@ -24,6 +26,11 @@ export default function ButtonPad({
         firstButtonHandler = onResume;
     }
 
+    const secondButtonLabel = isStopped ? '↺' : '■';
+    const secondButtonHandler = isStopped ? onClear : onStop;
+    const secondButtonDisabled = !isRunning && !isStopped;
+
+
     return (
         <div className="buttonPad">
             <Button 
@@ -31,9 +38,9 @@ export default function ButtonPad({
                 label={firstButtonLabel}
             />
             <Button 
-                onClick={onStop}
-                label='■'
-                disabled={!isRunning}
+                onClick={secondButtonHandler}
+                label={secondButtonLabel}
+                disabled={secondButtonDisabled}
             />
         </div>
     )
