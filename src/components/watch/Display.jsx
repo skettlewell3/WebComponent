@@ -21,21 +21,21 @@ export default function Display({
     } else if (!isRunning) {
         focusContent = formatTime(elapsedTime);
     } else {
+        shrinkTop = formatTime(elapsedTime);
         focusContent = formatTime(currentInterval || 0);
     }
 
-    if (pauseCount > 0) {
+    if (pauseCount > 0 || pauseCount === 0 && isPaused) {
         shrinkBottom = (
             <>
-            <div>❚❚({pauseCount})</div>
-            <div>{formatTime(pausedTime)}</div>
+            <div>❚❚ ({pauseCount})</div>
+            <div>{formatTime(isPaused ? pausedTime + currentInterval : pausedTime)}</div>
             </>
         );
-        shrinkTop = formatTime(elapsedTime);
     }
 
     return (
-        <div className="display">
+        <div className={`display ${isPaused ? 'paused' : 'running'}`}>
             <div className="shrink top">
                 {shrinkTop}
             </div>
