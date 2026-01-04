@@ -1,8 +1,9 @@
-export default function Button({ onClick, label }) {
+export default function Button({ onClick, label, className, disabled }) {
     return (
         <button 
-            className={`button ${label}`}
+            className={className}
             onClick={onClick}
+            disabled={disabled}
         >
             {label}
         </button>
