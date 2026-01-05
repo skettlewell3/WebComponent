@@ -35,7 +35,7 @@ export default function Display({
     }
 
     return (
-        <div className={`display ${isPaused ? 'paused' : 'running'}`}>
+        <div className={`display ${isPaused ? 'paused' : isRunning ? 'running' : 'standby'}`}>
             <div className="shrink top">
                 {shrinkTop}
             </div>
